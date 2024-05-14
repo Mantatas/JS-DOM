@@ -1,1 +1,25 @@
 @import '~bootstrap';
+
+.subjComplete{
+    text-decoration: line-through;
+    color: rgb(78, 79, 80);
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+
+    &__add-item{
+        text-align: center;
+        justify-content: center;
+    }
+
+    &__addBtn{
+        margin-left: auto;
+    }
+
+    &__addData{
+        display: flex;
+        flex-direction: column;
+    }
+}

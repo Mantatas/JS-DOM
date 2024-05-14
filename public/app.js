@@ -1,13 +1,168 @@
 /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./src/app.js":
 /*!********************!*\
   !*** ./src/app.js ***!
   \********************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _modules_addingAssignments__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/addingAssignments */ "./src/modules/addingAssignments.js");
+/* harmony import */ var _modules_loadingAssignments__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/loadingAssignments */ "./src/modules/loadingAssignments.js");
 
 
+var addForm = document.querySelector('#addData');
+addForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  (0,_modules_addingAssignments__WEBPACK_IMPORTED_MODULE_0__["default"])();
+});
+(0,_modules_loadingAssignments__WEBPACK_IMPORTED_MODULE_1__["default"])();
+
+/***/ }),
+
+/***/ "./src/modules/addingAssignments.js":
+/*!******************************************!*\
+  !*** ./src/modules/addingAssignments.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var tableBody = document.querySelector('#tableBody');
+var savedTables = JSON.parse(localStorage.getItem('savedTables')) || [];
+var addSubjects = function addSubjects() {
+  var tableRow = document.createElement('tr');
+  if (document.querySelector('#addSubject').value.length > 0 && document.querySelector('#addPriority').value.length > 0 && document.querySelector('#addDueDate').value.length > 0) {
+    tableBody.appendChild(tableRow);
+    var subjectCell = document.createElement('td');
+    subjectCell.textContent = document.querySelector('#addSubject').value;
+    var priorityCell = document.createElement('td');
+    priorityCell.textContent = document.querySelector('#addPriority').value;
+    var dueDateCell = document.createElement('td');
+    dueDateCell.textContent = document.querySelector('#addDueDate').value;
+    var statusCell = document.createElement('td');
+    statusCell.classList.add('tableStatus');
+    statusCell.textContent = 'Incomplete';
+    var removeCell = document.createElement('td');
+    var removeButton = document.createElement('button');
+    removeButton.textContent = 'Remove';
+    removeButton.addEventListener('click', function () {
+      tableBody.removeChild(tableRow);
+      savedTables = savedTables.filter(function (entry) {
+        return entry.subject !== subjectCell.textContent;
+      });
+      localStorage.setItem('savedTables', JSON.stringify(savedTables));
+    });
+    var currStatus = document.createElement('td');
+    var newCheck = document.createElement('input');
+    newCheck.type = 'checkbox';
+    newCheck.setAttribute('id', 'compCheckbox');
+    newCheck.addEventListener('change', function () {
+      if (newCheck.checked) {
+        statusCell.textContent = 'Complete';
+        subjectCell.classList.add('subjComplete');
+        localStorage.setItem('savedTables', JSON.stringify(savedTables));
+      } else {
+        statusCell.textContent = 'Incomplete';
+        subjectCell.classList.remove('subjComplete');
+      }
+    });
+    currStatus.appendChild(newCheck);
+    tableRow.appendChild(subjectCell);
+    tableRow.appendChild(priorityCell);
+    tableRow.appendChild(dueDateCell);
+    tableRow.appendChild(statusCell);
+    tableRow.appendChild(currStatus);
+    tableRow.appendChild(removeCell);
+    var newTable = {
+      subject: subjectCell.textContent,
+      priority: priorityCell.textContent,
+      dueDate: dueDateCell.textContent,
+      status: 'Incomplete',
+      checkbox: currStatus
+    };
+    if (savedTables.length > 0) {
+      savedTables.push(newTable);
+    } else {
+      savedTables = [newTable];
+    }
+    ;
+    localStorage.setItem('savedTables', JSON.stringify(savedTables));
+  }
+  console.log(JSON.parse(localStorage.getItem('savedTables')));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (addSubjects);
+
+/***/ }),
+
+/***/ "./src/modules/loadingAssignments.js":
+/*!*******************************************!*\
+  !*** ./src/modules/loadingAssignments.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var tableBody = document.querySelector('#tableBody');
+var loadSubjects = function loadSubjects() {
+  var savedTables = JSON.parse(localStorage.getItem('savedTables')) || [];
+  if (savedTables.length > 0) {
+    savedTables.forEach(function (savedTable) {
+      var tableRow = document.createElement('tr');
+      var subjectCell = document.createElement('td');
+      subjectCell.textContent = savedTable.subject;
+      var priorityCell = document.createElement('td');
+      priorityCell.textContent = savedTable.priority;
+      var dueDateCell = document.createElement('td');
+      dueDateCell.textContent = savedTable.dueDate;
+      var statusCell = document.createElement('td');
+      statusCell.classList.add('tableStatus');
+      statusCell.textContent = savedTable.status;
+      var currStatus = document.createElement('td');
+      var newCheck = document.createElement('input');
+      newCheck.type = 'checkbox';
+      newCheck.addEventListener('change', function () {
+        savedTable.status = newCheck.checked ? 'Complete' : 'Incomplete';
+        statusCell.textContent = savedTable.status;
+        localStorage.setItem('savedTables', JSON.stringify(savedTables));
+      });
+      newCheck.checked = savedTable.status === 'Complete';
+      if (statusCell.textContent === 'Complete') {
+        subjectCell.classList.add('subjComplete');
+      } else {
+        subjectCell.classList.remove('subjComplete');
+      }
+      ;
+      var removeCell = document.createElement('td');
+      var removeButton = document.createElement('button');
+      removeButton.textContent = 'Remove';
+      removeButton.addEventListener('click', function () {
+        tableBody.removeChild(tableRow);
+        savedTables = savedTables.filter(function (entry) {
+          return entry.subject !== subjectCell.textContent;
+        });
+        localStorage.setItem('savedTables', JSON.stringify(savedTables));
+      });
+      currStatus.appendChild(newCheck);
+      tableRow.appendChild(subjectCell);
+      tableRow.appendChild(priorityCell);
+      tableRow.appendChild(dueDateCell);
+      tableRow.appendChild(statusCell);
+      tableRow.appendChild(currStatus);
+      tableRow.appendChild(removeCell);
+      tableBody.appendChild(tableRow);
+    });
+  } else {
+    console.log('No more data to display');
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (loadSubjects);
 
 /***/ }),
 
@@ -17,7 +172,6 @@
   \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
@@ -83,6 +237,18 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
 /******/ 		};
 /******/ 	})();
 /******/ 	

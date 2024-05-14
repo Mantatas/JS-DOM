@@ -11965,3 +11965,23 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.subjComplete {
+  text-decoration: line-through;
+  color: rgb(78, 79, 80);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+.container__add-item {
+  text-align: center;
+  justify-content: center;
+}
+.container__addBtn {
+  margin-left: auto;
+}
+.container__addData {
+  display: flex;
+  flex-direction: column;
+}
